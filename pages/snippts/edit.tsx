@@ -15,8 +15,6 @@ import SnipptContentEditor, {
   SnipptContent,
 } from '../../components/SnipptContentEditor'
 import useAuth from '../../hooks/useAuth'
-import useCodeTheme from '../../hooks/useCodeTheme'
-import useLanguage from '../../hooks/useLanguage'
 import useSnippts from '../../hooks/useSnippts'
 
 const EditSnippt: NextPage = () => {
@@ -24,8 +22,6 @@ const EditSnippt: NextPage = () => {
   const snippts = useSnippts()
   const snippt = snippts.one(parseInt(router.query.id as string))
   const auth = useAuth()
-  const language = useLanguage()
-  const codeTheme = useCodeTheme()
   const toasts = useToasts()
   const isLoggedIn = auth.isLoggedIn().data?.isLoggedIn
   const [snipptData, setSnipptData] = useState({

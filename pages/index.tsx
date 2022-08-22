@@ -1,19 +1,13 @@
 import { Loading, Note, Page, Spacer, Text } from '@geist-ui/core'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import CodeSnippts from '../components/CodeSnippts'
 import config from '../config'
 import useSnippts from '../hooks/useSnippts'
 
 const Home: NextPage = () => {
   const snippts = useSnippts()
-  const router = useRouter()
-  const skip = parseInt((router.query.skip as string) || '0')
-  const take = parseInt(
-    (router.query.take as string) || '' + config.site.entriesPerPage
-  )
-  const currentSnippts = snippts.all(skip, take)
+  const currentSnippts = snippts.all(0, config.site.entriesPerPage)
 
   return (
     <Page dotBackdrop>

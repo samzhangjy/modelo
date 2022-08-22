@@ -34,6 +34,20 @@ const useAllSnippts = (skip: number, take: number) => {
   }
 }
 
+const useSearchSnippts = (keyword: string) => {
+  const { data, error } = useSWR<GetSnipptsResponse, Error>(
+    `/api/snippts/search?kw=${keyword}`,
+    fetcher
+  )
+  const serverError = data && data.status !== 'success'
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error || serverError,
+  }
+}
+
 const deleteSnippt = async (id: number): Promise<DeleteSnipptResponse> => {
   const response = await fetch(`/api/snippts/delete?id=${id}`, {
     method: 'DELETE',
@@ -73,6 +87,7 @@ export default function useSnippts() {
   return {
     one: useSingleSnippt,
     all: useAllSnippts,
+    search: useSearchSnippts,
     delete: deleteSnippt,
     edit: editSnippt,
     create: createSnippt,
