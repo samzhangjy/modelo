@@ -6,7 +6,7 @@ export const getAvatarDisplayText = (name: string) => {
     .reduce((response, word) => (response += word.slice(0, 1)), '')
 }
 
-export const CodeTemplateSchema = Joi.object({
+export const CodeSnipptSchema = Joi.object({
   id: Joi.number().optional(),
   createdAt: Joi.date().iso().optional(),
   updatedAt: Joi.date().iso().optional(),
@@ -16,7 +16,7 @@ export const CodeTemplateSchema = Joi.object({
   code: Joi.string(),
 })
 
-export const CodeTemplatePartialSchema = Joi.object({
+export const CodeSnipptPartialSchema = Joi.object({
   id: Joi.number().optional(),
   createdAt: Joi.date().iso().optional(),
   updatedAt: Joi.date().iso().optional(),

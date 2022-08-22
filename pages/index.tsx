@@ -1,12 +1,19 @@
+import { Loading, Note, Page, Spacer, Text } from '@geist-ui/core'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { Grid, Loading, Note, Page, Spacer, Text } from '@geist-ui/core'
-import useTemplates from '../hooks/useTemplates'
-import CodeTemplate from '../components/CodeTemplate'
+import { useRouter } from 'next/router'
+import CodeSnippts from '../components/CodeSnippts'
+import config from '../config'
+import useSnippts from '../hooks/useSnippts'
 
 const Home: NextPage = () => {
-  const templates = useTemplates()
-  const allTemplates = templates.all()
+  const snippts = useSnippts()
+  const router = useRouter()
+  const skip = parseInt((router.query.skip as string) || '0')
+  const take = parseInt(
+    (router.query.take as string) || '' + config.site.entriesPerPage
+  )
+  const currentSnippts = snippts.all(skip, take)
 
   return (
     <Page dotBackdrop>
@@ -20,23 +27,20 @@ const Home: NextPage = () => {
       <Text h3>Instantly record your codes.</Text>
 
       <Spacer h={2} />
+      <Text h2>Recent snippts</Text>
 
-      {allTemplates.isError && (
+      <Spacer h={2} />
+
+      {currentSnippts.isError && (
         <Note type="error" label="ERROR">
-          Failed to load templates. Please try again.
+          Failed to load snippts. Please try again.
         </Note>
       )}
 
-      {allTemplates.isLoading || allTemplates.isError ? (
-        <>{allTemplates.isLoading && <Loading />}</>
+      {currentSnippts.isLoading || currentSnippts.isError ? (
+        <>{currentSnippts.isLoading && <Loading />}</>
       ) : (
-        <Grid.Container gap={3}>
-          {allTemplates.data?.data.map((template, index) => (
-            <Grid xs={24} md={12} lg={8} key={index}>
-              <CodeTemplate data={template} />
-            </Grid>
-          ))}
-        </Grid.Container>
+        <CodeSnippts snippts={currentSnippts.data?.data || []} />
       )}
     </Page>
   )

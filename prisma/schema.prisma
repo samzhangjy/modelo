@@ -10,7 +10,7 @@ datasource db {
   url               = env("DATABASE_URL")
 }
 
-model CodeTemplate {
+model CodeSnippt {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

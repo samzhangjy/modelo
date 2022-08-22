@@ -1,22 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { CodeTemplate, PrismaClient } from '@prisma/client'
+import { CodeSnippt, PrismaClient } from '@prisma/client'
 import { StatusCodes } from 'http-status-codes'
 import { withProtectedRoute } from '../../../lib/withSession'
+import withValidation from '../../../lib/withValidation'
+import { CodeSnipptPartialSchema } from '../../../lib/common'
 import withErrorBoundary from '../../../lib/withErrorBoundary'
 
 const prisma = new PrismaClient()
 
-export type DeleteTemplateResponse = {
-  data: CodeTemplate | null
+export type EditSnipptResponse = {
+  data: CodeSnippt | null
   status: 'success' | 'error'
   msg?: string
 }
 
 async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<DeleteTemplateResponse>
+  res: NextApiResponse<EditSnipptResponse>
 ) {
-  if (req.method !== 'DELETE') {
+  if (req.method !== 'POST') {
     res
       .status(StatusCodes.METHOD_NOT_ALLOWED)
       .json({ data: null, status: 'error' })
@@ -30,13 +32,16 @@ async function handler(
     return
   }
 
-  const result = await prisma.codeTemplate.delete({
+  const result = await prisma.codeSnippt.update({
     where: {
       id: Number.parseInt(req.query.id as string),
     },
+    data: req.body,
   })
 
   res.status(StatusCodes.ACCEPTED).json({ data: result, status: 'success' })
 }
 
-export default withProtectedRoute(withErrorBoundary(handler))
+export default withProtectedRoute(
+  withValidation({ body: CodeSnipptPartialSchema }, withErrorBoundary(handler))
+)
