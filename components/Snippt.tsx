@@ -4,7 +4,7 @@ import { CodeSnippt as CodeSnipptModel } from '@prisma/client'
 import NextLink from 'next/link'
 import { FC } from 'react'
 
-const CodeSnippt: FC<{ data: CodeSnipptModel }> = ({ data }) => {
+const Snippt: FC<{ data: CodeSnipptModel }> = ({ data }) => {
   return (
     <Card hoverable width="100%">
       <Text h4>{data.name}</Text>
@@ -20,4 +20,4 @@ const CodeSnippt: FC<{ data: CodeSnipptModel }> = ({ data }) => {
   )
 }
 
-export default CodeSnippt
+export default Snippt

@@ -19,9 +19,14 @@ const CreateSnippt: NextPage = () => {
     overview: '',
     code: '// Your code here\n',
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async () => {
+    setIsSubmitting(true)
+
     const response = await snippts.create(snipptData)
+
+    setIsSubmitting(false)
 
     if (response.status !== 'success') {
       toasts.setToast({
@@ -56,7 +61,12 @@ const CreateSnippt: NextPage = () => {
       <Spacer h={1} />
       <SnipptContentEditor snippt={snipptData} onChange={setSnipptData} />
       <Spacer h={1} />
-      <Button type="success" width="100%" onClick={handleSubmit}>
+      <Button
+        type="success"
+        width="100%"
+        onClick={handleSubmit}
+        loading={isSubmitting}
+      >
         Submit
       </Button>
     </Page>

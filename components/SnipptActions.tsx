@@ -9,6 +9,7 @@ import {
 } from '@geist-ui/core'
 import { Edit3, Trash } from '@geist-ui/icons'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import useSnippts from '../hooks/useSnippts'
 import { GetSnipptResponse } from '../pages/api/snippts/[id]'
 
@@ -21,9 +22,13 @@ const SnipptActions = ({ snippt }: { snippt?: GetSnipptResponse }) => {
     setVisible: setConfirmModalVisible,
     bindings: confirmModalBindings,
   } = useModal()
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
+    setIsDeleting(true)
     const response = await snippts.delete(snippt?.data?.id as number)
+    setIsDeleting(false)
+
     if (response.status !== 'success') {
       toasts.setToast({
         text: response.msg,
@@ -52,7 +57,7 @@ const SnipptActions = ({ snippt }: { snippt?: GetSnipptResponse }) => {
         <Modal.Action passive onClick={() => setConfirmModalVisible(false)}>
           Cancel
         </Modal.Action>
-        <Modal.Action type="error" onClick={handleDelete}>
+        <Modal.Action onClick={handleDelete} loading={isDeleting}>
           Delete
         </Modal.Action>
       </Modal>

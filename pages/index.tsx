@@ -1,7 +1,7 @@
 import { Loading, Note, Page, Spacer, Text } from '@geist-ui/core'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import CodeSnippts from '../components/CodeSnippts'
+import Snippts from '../components/Snippts'
 import config from '../config'
 import useSnippts from '../hooks/useSnippts'
 
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
       {currentSnippts.isLoading || currentSnippts.isError ? (
         <>{currentSnippts.isLoading && <Loading />}</>
       ) : (
-        <CodeSnippts snippts={currentSnippts.data?.data || []} />
+        <Snippts snippts={currentSnippts.data?.data || []} />
       )}
     </Page>
   )

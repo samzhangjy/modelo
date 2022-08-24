@@ -30,6 +30,7 @@ const EditSnippt: NextPage = () => {
     overview: '',
     code: '',
   } as SnipptContent)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   useEffect(() => {
     if (snippt.isLoading) return
 
@@ -50,10 +51,14 @@ const EditSnippt: NextPage = () => {
   }, [snippt.isLoading, snippt.data?.data])
 
   const handleSubmit = async () => {
+    setIsSubmitting(true)
+
     const response = await snippts.edit(
       snippt.data?.data?.id as number,
       snipptData
     )
+
+    setIsSubmitting(false)
 
     if (response.status !== 'success') {
       toasts.setToast({
@@ -102,7 +107,12 @@ const EditSnippt: NextPage = () => {
         <>
           <SnipptContentEditor snippt={snipptData} onChange={setSnipptData} />
           <Spacer h={1} />
-          <Button type="success" width="100%" onClick={handleSubmit}>
+          <Button
+            type="success"
+            width="100%"
+            onClick={handleSubmit}
+            loading={isSubmitting}
+          >
             Submit
           </Button>
         </>

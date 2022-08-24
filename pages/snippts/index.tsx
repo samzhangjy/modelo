@@ -12,7 +12,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import CodeSnippts from '../../components/CodeSnippts'
+import Snippts from '../../components/Snippts'
 import config from '../../config'
 import useSnippts from '../../hooks/useSnippts'
 
@@ -70,7 +70,7 @@ const ViewSnippts: NextPage = () => {
       {currentSnippts.isLoading || currentSnippts.isError ? (
         <>{currentSnippts.isLoading && <Loading />}</>
       ) : (
-        <CodeSnippts snippts={currentSnippts.data?.data || []} />
+        <Snippts snippts={currentSnippts.data?.data || []} />
       )}
       <Spacer h={3} />
       {currentSnippts.data?.totalEntries && (
